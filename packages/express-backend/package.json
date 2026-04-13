@@ -1,0 +1,15 @@
+{
+  "name": "express-backend",
+  "version": "1.0.0",
+  "description": "backend",
+  "license": "ISC",
+  "author": "",
+  "type": "module",
+  "main": "backend.js",
+  "scripts": {
+    "test": "t"
+  },
+  "dependencies": {
+    "express": "^5.2.1"
+  }
+}
