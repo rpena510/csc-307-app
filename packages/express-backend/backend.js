@@ -37,6 +37,12 @@ const findUserByName = (name) => {
     );
 };
 
+const findUserByNameAndJob = (name, job) => {
+    return users["users_list"].filter(
+        (user) => user["name"] === name && user["job"] === job
+    );
+};
+
 const findUserById = (id) => 
     users["users_list"].find((user) => user["id"] === id);
 
@@ -61,6 +67,7 @@ app.use(express.json());
 app.get("/", (req, res) => {
     res.send("Hello World!");
 });
+/*
 app.get("/users", (req, res) => {
     const name = req.query.name;
     if (name != undefined) {
@@ -71,6 +78,7 @@ app.get("/users", (req, res) => {
         res.send(users);
     }
 });
+*/
 app.get("/users/:id", (req, res) => {
     const id = req.params.id;
     let result = findUserById(id);
@@ -94,6 +102,18 @@ app.delete("/users/:id", (req, res) => {
         res.status(404).send("Resource not found");
     } else {
         res.send();
+    }
+});
+
+app.get("/users", (req, res) => {
+    const name = req.query.name;
+    const job = req.query.job;
+    if (name != undefined) {
+        let result = findUserByNameAndJob(name, job);
+        result = {users_list: result};
+        res.send(result);
+    } else {
+        res.send(users);
     }
 });
 
