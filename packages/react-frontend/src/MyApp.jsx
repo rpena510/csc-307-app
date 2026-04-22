@@ -5,20 +5,38 @@ import Form from "./Form";
 
 function MyApp() {
     const [characters, setCharacters] = useState([]);
-    function removeOneCharacter(index) {
-        const updated = characters.filter((character, i) =>{
-            return i != index;
+    
+    function removeOneCharacter(id) {
+        deleteUser(id)
+            .then((res) => {
+                if (res.status === 204){
+                    const updated = characters.filter((character) => {
+                        return character.id !== id
+                    });
+                    setCharacters(updated);
+                }
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    }
+    function deleteUser(id) {
+        const promise = fetch(`http://localhost:8000/users/${id}`, {
+            method: "DELETE",
         });
-        setCharacters(updated);
+        return promise;
     }
     
     function updateList(person) {
         postUser(person)
             .then((res) => {
-                if (res.status == 201) {
-                setCharacters([...characters, person]);
+                if (res.status === 201) {
+                    return res.json();
                 }
-            })   
+            })
+            .then((res) => {
+                setCharacters(prev => [...prev, res])
+            })
             .catch((error) => {
                 console.log(error);
             });
